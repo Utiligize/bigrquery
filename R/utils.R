@@ -77,6 +77,11 @@ has_bigrquerystorage <- function() {
 }
 
 check_labels <- function(labels) {
+  # Handle NULL, NA, or empty inputs
+  if (is.null(labels) || length(labels) == 0 || (length(labels) == 1 && is.na(labels))) {
+    return(NULL)
+  }
+
   if (!is.list(labels)) {
     warning(paste0("Labels need to be a dictionary list - setting labels to list()"), immediate. = TRUE)
     return(NULL)
