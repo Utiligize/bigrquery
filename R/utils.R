@@ -83,20 +83,25 @@ check_labels <- function(labels) {
   }
 
   if (!is.list(labels)) {
-    warning(paste0("Labels need to be a dictionary list - setting labels to NULL"), immediate. = TRUE)
+    warning(paste0("Labels must to be a dictionary list; dropping labels"), immediate. = TRUE)
+    return(NULL)
+  }
+  nms <- names(labels)
+  if (is.null(nms) || anyNA(nms) || any(nms == "")) {
+    warning("Label keys must be non-empty strings; dropping labels", immediate. = TRUE, call. = FALSE)
     return(NULL)
   }
   for (nm in names(labels)) {
     if (!is.character(labels[[nm]]) || length(labels[[nm]]) != 1) {
-      warning(sprintf("Label '%s' must be a single string type - setting labels to NULL", nm), immediate. = TRUE)
+      warning(sprintf("Label '%s' must be a single string; dropping labels", nm), immediate. = TRUE)
       return(NULL)
     }
     if (nm != tolower(nm)) {
-      warning(sprintf("Label key '%s' must be lowercase - setting labels to NULL", nm), immediate. = TRUE)
+      warning(sprintf("Label key '%s' must match ^[a-z0-9_-]{0,62}$; dropping labels", nm), immediate. = TRUE)
       return(NULL)
     }
     if (labels[[nm]] != tolower(labels[[nm]])) {
-      warning(sprintf("Label value '%s' must be lowercase - setting labels to NULL", labels[[nm]]), immediate. = TRUE)
+      warning(sprintf("Label value '%s' must be empty or match ^[a-z0-9_-]{0,62}$; dropping labels", labels[[nm]]), immediate. = TRUE)
       return(NULL)
     }
   }
