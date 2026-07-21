@@ -41,11 +41,11 @@ jobs:
       - uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5
         with:
           # Fail if error if not on PR, or if on PR and token is given
-          fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env]
           files: ./cobertura.xml
           plugins: noop
           disable_search: true
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env]
 
       - name: Show testthat output
         if: always()
